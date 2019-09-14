@@ -1,0 +1,29 @@
+<idea-plugin>
+    <id>com.zalesskyi.csv_translator</id>
+    <name>CSV Translator</name>
+    <vendor email="zalesskyi.dev@gmail.com" url="https://github.com/zalesskyi"></vendor>
+
+    <description>Description of the plugin is here... Check it</description>
+
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+    <!-- uncomment to enable plugin in all products
+    <depends>com.intellij.modules.lang</depends>
+    -->
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Add your extensions here -->
+    </extensions>
+
+    <actions>
+        <group id="MyPlugin.TopMenu"
+               text="_MyPlugin"
+               description="MyPlugin toolbar menu">
+            <add-to-group group-id="MainMenu" anchor="last"/>
+            <action id="MyAction"
+                    class="MyAction"
+                    text="_MyAction"
+                    description="MyAction"/>
+        </group>
+    </actions>
+</idea-plugin>
