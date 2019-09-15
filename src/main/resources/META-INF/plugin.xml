@@ -16,14 +16,14 @@
     </extensions>
 
     <actions>
-        <group id="MyPlugin.TopMenu"
-               text="_MyPlugin"
-               description="MyPlugin toolbar menu">
-            <add-to-group group-id="MainMenu" anchor="last"/>
-            <action id="MyAction"
-                    class="MyAction"
-                    text="_MyAction"
-                    description="MyAction"/>
+        <group id="TextBoxes"
+               text="CSV Translator"
+               description="CSV Translator toolbar menu">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+            <action id="TranslateAction"
+                    class="ui.actions.TranslateAction"
+                    text="Add Translations"
+                    description="Translate strings"/>
         </group>
     </actions>
 </idea-plugin>
