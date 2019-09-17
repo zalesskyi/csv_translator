@@ -1,6 +1,7 @@
 package processing.modules
 
 import exceptions.ErrorCode
+import exceptions.TranslateFlowException
 import io.reactivex.Single
 import org.apache.commons.csv.CSVFormat
 import org.apache.commons.csv.CSVParser
@@ -17,7 +18,7 @@ interface CsvModule {
 
     /**
      * Parse csv-file.
-     * Can throw [IllegalArgumentException], if [csvFile] has not correct structure.
+     * Can throw [TranslateFlowException], if [csvFile] has not correct structure.
      *
      * @param csvFile file to parse
      *
@@ -45,6 +46,10 @@ class CsvModuleImpl : CsvModule {
     override fun getLocales(csvFile: File): Single<List<String>> =
         Single.just(CSVParser(FileReader(csvFile), CSVFormat.DEFAULT.withDelimiter(CSV_DELIMITER).withHeader()))
             .map { parser -> parser.also { checkName(it) }.headerNames.drop(CSV_NAME_POSITION + 1) }  // exclude name field.
+            .flatMap { locales ->
+                locales.takeUnless { it.contains(EMPTY_STRING) }?.let { Single.just(it) }
+                    ?: Single.error(TranslateFlowException(ErrorCode.CSV_LOCALE_FIELD_NOT_FOUND))
+            }
 
     private fun processParsing(parser: CSVParser) =
         parser.also { checkName(it) }
@@ -53,11 +58,7 @@ class CsvModuleImpl : CsvModule {
     @Throws(IllegalArgumentException::class)
     private fun checkName(parser: CSVParser) {
         if (parser.headerNames[CSV_NAME_POSITION].toLowerCase() != CSV_NAME_FIELD)
-            throw IllegalArgumentException(ErrorCode.CSV_NAME_FIELD_NOT_FOUND())
-    }
-
-    private fun checkLocales(parser: CSVParser) {
-
+            throw TranslateFlowException(ErrorCode.CSV_NAME_FIELD_NOT_FOUND)
     }
 
     private fun CSVRecord.toTranslationModel(parser: CSVParser): TranslationModel? =

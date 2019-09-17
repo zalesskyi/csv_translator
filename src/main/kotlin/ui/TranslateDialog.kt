@@ -1,8 +1,10 @@
 package ui
 
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.project.guessProjectDir
 import com.intellij.openapi.ui.DialogWrapper
 import extensions.safeLet
+import javax.swing.JOptionPane
 
 class TranslateDialog(private val project: Project) : DialogWrapper(true),
     TranslateFlowCallback {
@@ -24,9 +26,24 @@ class TranslateDialog(private val project: Project) : DialogWrapper(true),
         }
     }
 
-    override fun onPathError(path: String) = Unit
+    override fun onPathError(path: String) {
+        showError("The path \"$path\" is invalid")
+    }
 
-    override fun onNamingConflict(fieldName: String) = Unit
+    override fun onInvalidCSVStructure() {
+        showError("Structure of CSV file is invalid. Check 'url', how it should look like.")
+    }
 
-    override fun onFinish() = Unit
+    override fun onXMLNamingConflict(fieldName: String) {
+        // todo
+    }
+
+    override fun onFinish() {
+        project.guessProjectDir()?.refresh(true, true)
+        super.doOKAction()
+    }
+
+    private fun showError(message: String) {
+        JOptionPane.showMessageDialog(panel, message, "Error", JOptionPane.ERROR_MESSAGE)
+    }
 }

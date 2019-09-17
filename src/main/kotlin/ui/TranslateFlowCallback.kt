@@ -15,7 +15,13 @@ interface TranslateFlowCallback {
      *
      * @param fieldName name, that already exists in XML file.
      */
-    fun onNamingConflict(fieldName: String)
+    fun onXMLNamingConflict(fieldName: String)
+
+    /**
+     * Called if there is invalid structure of scv file.
+     * Field "name" is missed.
+     */
+    fun onInvalidCSVStructure()
 
     /**
      * Called, when processing is finished.

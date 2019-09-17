@@ -10,7 +10,7 @@ interface FileModule {
      * Check, if there are strings.xml's with such locales.
      * If not, then create.
      *
-     * @return [Single] with true, if there are such files. False otherwise.
+     * @return [Single] with true, if there are no such files and they was created. False otherwise.
      */
     fun checkLocales(locales: List<String>, resDir: File): Single<Boolean>
 }

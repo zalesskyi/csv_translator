@@ -29,7 +29,18 @@ class TranslatePresenterImpl(callback: TranslateFlowCallback) : TranslatePresent
                 } ?: Single.error(TranslateFlowException(ErrorCode.FILE_NOT_FOUND, csvPath))
             }
             .subscribe ({
-            }, {})
+                callbackRef.get()?.onFinish()
+            }, {
+                callbackRef.get()?.run {
+                    (it as? TranslateFlowException)?.let { error ->
+                        when (error.errorCode) {
+                            ErrorCode.FILE_NOT_FOUND -> error.message?.let { onPathError(it) }
+                            ErrorCode.CSV_NAME_FIELD_NOT_FOUND, ErrorCode.CSV_LOCALE_FIELD_NOT_FOUND -> onInvalidCSVStructure()
+                            else -> onFinish()
+                        }
+                    }
+                }
+            })
     }
 
     /**

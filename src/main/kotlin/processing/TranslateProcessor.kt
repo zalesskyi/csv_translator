@@ -1,7 +1,5 @@
 package processing
 
-import exceptions.ErrorCode
-import exceptions.TranslateFlowException
 import io.reactivex.Single
 import processing.models.TranslationModel
 import processing.modules.CsvModule
@@ -29,15 +27,9 @@ class TranslateProcessorImpl : TranslateProcessor {
     override fun doTranslateFlow(csvFile: File, resDir: File): Single<Unit> =
         csvModule.getLocales(csvFile)
             .flatMap { fileModule.checkLocales(it, resDir) }
+            .flatMap { parseCsvFile(csvFile) }
             .map { Unit }
 
     private fun parseCsvFile(csv: File): Single<List<TranslationModel>> =
         csvModule.parse(csv)
-            .onErrorResumeNext() {
-                if (it is IllegalArgumentException) {
-                    Single.error(TranslateFlowException(ErrorCode.byValue(it.message), null))
-                } else {
-                    Single.error(it)
-                }
-            }
 }
