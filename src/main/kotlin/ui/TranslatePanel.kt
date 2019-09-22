@@ -4,8 +4,8 @@ import com.intellij.openapi.project.Project
 import ui.base.BaseTranslatePanel
 import ui.file_filters.CsvFilter
 import ui.file_filters.DirectoryFilter
-import utils.EMPTY_STRING
 import utils.FileUtils
+import javax.swing.JFileChooser
 
 class TranslatePanel(project: Project) : BaseTranslatePanel(project) {
 
@@ -26,7 +26,9 @@ class TranslatePanel(project: Project) : BaseTranslatePanel(project) {
     }
 
     override fun onPickResFolder() {
-        FileUtils.pickFile(tfRes.text ?: EMPTY_STRING, filter = DirectoryFilter())?.let { pickedPath ->
+        FileUtils.pickFile(tfRes.text.orEmpty(),
+            filter = DirectoryFilter(),
+            fileSelectionMode = JFileChooser.DIRECTORIES_ONLY)?.let { pickedPath ->
             tfRes.text = pickedPath
         }
     }

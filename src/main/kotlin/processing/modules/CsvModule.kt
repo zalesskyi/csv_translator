@@ -12,7 +12,8 @@ import utils.CSV_NAME_FIELD
 import utils.CSV_NAME_POSITION
 import utils.EMPTY_STRING
 import java.io.File
-import java.io.FileReader
+import java.io.FileInputStream
+import java.io.InputStreamReader
 
 interface CsvModule {
 
@@ -39,12 +40,13 @@ interface CsvModule {
 class CsvModuleImpl : CsvModule {
 
     override fun parse(csvFile: File): Single<List<TranslationModel>> =
-        Single.just(FileReader(csvFile))
+        Single.just(InputStreamReader(FileInputStream(csvFile), "UTF-8"))
             .map { CSVParser(it, CSVFormat.DEFAULT.withDelimiter(CSV_DELIMITER).withHeader()) }
             .map { parser -> processParsing(parser) }
 
     override fun getLocales(csvFile: File): Single<List<String>> =
-        Single.just(CSVParser(FileReader(csvFile), CSVFormat.DEFAULT.withDelimiter(CSV_DELIMITER).withHeader()))
+        Single.just(CSVParser(InputStreamReader(FileInputStream(csvFile), "UTF-8"),
+            CSVFormat.DEFAULT.withDelimiter(CSV_DELIMITER).withHeader()))
             .map { parser -> parser.also { checkName(it) }.headerNames.drop(CSV_NAME_POSITION + 1) }  // exclude name field.
             .flatMap { locales ->
                 locales.takeUnless { it.contains(EMPTY_STRING) }?.let { Single.just(it) }
@@ -55,7 +57,7 @@ class CsvModuleImpl : CsvModule {
         parser.also { checkName(it) }
             .mapNotNull { record -> record.toTranslationModel(parser) }
 
-    @Throws(IllegalArgumentException::class)
+    @Throws(TranslateFlowException::class)
     private fun checkName(parser: CSVParser) {
         if (parser.headerNames[CSV_NAME_POSITION].toLowerCase() != CSV_NAME_FIELD)
             throw TranslateFlowException(ErrorCode.CSV_NAME_FIELD_NOT_FOUND)
