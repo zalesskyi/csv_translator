@@ -24,7 +24,7 @@ class TranslatePresenterImpl(callback: TranslateFlowCallback) : TranslatePresent
             .flatMap { (csvPath, resPath) ->
                 convertPath(csvPath)?.let { csvFile ->
                     convertPath(resPath)?.takeIf { it.isDirectory }?.let { resDir ->
-                        processor.doTranslateFlow(csvFile, resDir)   // todo
+                        processor.doTranslateFlow(csvFile, resDir)
                     } ?: Single.error(TranslateFlowException(ErrorCode.FILE_NOT_FOUND, resPath))
                 } ?: Single.error(TranslateFlowException(ErrorCode.FILE_NOT_FOUND, csvPath))
             }

@@ -24,7 +24,9 @@ dependencies {
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
-    version '2019.2.2'
+    version 'IC-2018.3'
+    updateSinceUntilBuild false
+    sameSinceUntilBuild false
     //alternativeIdePath 'C:\\Program Files\\Android\\Android Studio'
 }
 compileKotlin {

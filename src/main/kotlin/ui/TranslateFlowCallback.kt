@@ -11,13 +11,6 @@ interface TranslateFlowCallback {
     fun onPathError(path: String)
 
     /**
-     * Called on xml naming conflict.
-     *
-     * @param fieldName name, that already exists in XML file.
-     */
-    fun onXMLNamingConflict(fieldName: String)
-
-    /**
      * Called if there is invalid structure of csv file.
      * Field "name" is missed.
      */

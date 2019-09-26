@@ -31,11 +31,7 @@ class TranslateDialog(private val project: Project) : DialogWrapper(true),
     }
 
     override fun onInvalidCSVStructure() {
-        showError("Structure of CSV file is invalid. Check 'url', how it should look like.")
-    }
-
-    override fun onXMLNamingConflict(fieldName: String) {
-        // todo
+        showError("Structure of CSV file is invalid. Check plugin description, to see how it should look like.")
     }
 
     override fun onFinish() {
