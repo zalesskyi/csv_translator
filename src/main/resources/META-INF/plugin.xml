@@ -1,29 +1,54 @@
 <idea-plugin>
     <id>com.zalesskyi.csv_translator</id>
+    <idea-version since-build="IU-171.4694.73"/>
     <name>CSV Translator</name>
-    <vendor email="zalesskyi.dev@gmail.com" url="https://github.com/zalesskyi"></vendor>
+    <vendor email="zalesskyi.dev@gmail.com" url="https://github.com/zalesskyi"/>
 
-    <description>Description of the plugin is here... Check it</description>
+    <description><![CDATA[
+      <h1>Android CSV Translator.</h1>
+      <p>Allows you to add translations for different locales by loading a CSV file.</p>
+      <p><b>NOTE</b></p>
+      <p>You can access the plugin from the "Tools" menu at the IDE toolbar</p>
+        <p></p>
+        <p>1.To add translations you must specify: </p>
+        <p>1.1. Path to CSV-file with translations;</p>
+        <p>1.2. Path to the module "res" directory where you want to upload translations.</p>
+        <p></p>
+        <p>2.Your CSV-file must:</p>
+        <p>2.1. Have UTF-8 encoding;</p>
+        <p>2.2. Use semicolon (;) as separator;</p>
+        <p>2.3. Have the structure as shown in the screenshot.</p>
+        <p></p>
+      <p>Changelog</p>
+      <p>Version: 1.0.2</p>
+      <a href ="https://github.com/zalesskyi/csv_translator">GitHub</a>
+    ]]></description>
+
+    <change-notes>Initial release of the CSV Translator plugin.</change-notes>
+
+    <version>1.0.2</version>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
          on how to target different products -->
     <!-- uncomment to enable plugin in all products
     <depends>com.intellij.modules.lang</depends>
     -->
+    <depends>com.intellij.modules.lang</depends>
+    <depends>com.intellij.modules.java</depends>
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
     </extensions>
 
     <actions>
-        <group id="MyPlugin.TopMenu"
-               text="_MyPlugin"
-               description="MyPlugin toolbar menu">
-            <add-to-group group-id="MainMenu" anchor="last"/>
-            <action id="MyAction"
-                    class="MyAction"
-                    text="_MyAction"
-                    description="MyAction"/>
+        <group id="TextBoxes"
+               text="CSV Translator"
+               description="CSV Translator toolbar menu">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+            <action id="TranslateAction"
+                    class="ui.actions.TranslateAction"
+                    text="Add Translations"
+                    description="Translate strings"/>
         </group>
     </actions>
 </idea-plugin>
