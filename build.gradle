@@ -5,7 +5,7 @@ plugins {
 apply plugin: 'idea'
 
 group 'com.zalesskyi'
-version '1.0'
+version '1.0.2'
 
 repositories {
     mavenCentral()
@@ -34,9 +34,4 @@ compileKotlin {
 }
 compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
-}
-patchPluginXml {
-    changeNotes """
-      Add change notes here.<br>
-      <em>most HTML tags may be used</em>"""
 }
